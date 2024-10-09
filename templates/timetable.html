@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ლექციების ცხრილი</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>ლექციების ცხრილი</h1>
+
+        <!-- Form to add subjects and time -->
+        <form action="{{ url_for('add_subject') }}" method="POST">
+            <label for="day">აირჩიე დღე</label>
+            <select name="day" required>
+                <option value="ორშაბათი">ორშაბათი</option>
+                <option value="სამშაბათი">სამშაბათი</option>
+                <option value="ოთხშაბათ">ოთხშაბათ</option>
+                <option value="ხუთშაბათი">ხუთშაბათი</option>
+                <option value="პარასკევი">პარასკევი</option>
+                <option value="შაბათი">შაბათი</option>
+                <option value="კვირა">კვირა</option>
+            </select>
+
+            <label for="subjects">შეიყვანე საგანი:</label>
+            <input type="text" name="subjects" placeholder="Math, Science, English" required>
+
+            <label for="time">აირჩიე დრო:</label>
+            <input type="time" name="time" required>
+
+            <button type="submit">საგნის დამატება</button>
+        </form>
+
+        <!-- Display the timetable -->
+        <div class="timetable">
+            {% for id, day, subject, time in timetable %}
+                <div class="day">
+                    <h2>{{ დღე }}</h2>
+                    <ul>
+                        <li>{{ დრო }} - {{ საგანი }}</li>
+                        <!-- Modify form -->
+                        <form action="{{ url_for('modify_subject', id=id) }}" method="POST" style="display:inline;">
+                            <input type="text" name="subject" placeholder="Modify Subject" required>
+                            <input type="time" name="time" required>
+                            <button type="submit">შევლა</button>
+                        </form>
+                        <!-- Delete button -->
+                        <form action="{{ url_for('delete_subject', id=id) }}" method="POST" style="display:inline;">
+                            <button type="submit">წაშლა</button>
+                        </form>
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
